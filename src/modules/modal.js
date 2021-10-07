@@ -50,6 +50,12 @@ const modalStructure = async (buttons, showsList) => {
       detail5.innerHTML = `Summary: ${showsList[i].summary}`;
       detail5.classList.add('summary');
 
+      const detail6 = document.createElement('h4');
+      detail6.innerHTML = `<a href="${showsList[i].url}" target="_blank">Watch here</a>`;
+      detail6.style.marginTop = '1rem';
+      detail6.style.marginBottom = '1rem';
+      detail6.classList.add('summary');
+
       const commentSection = document.createElement('h3');
       commentSection.classList.add('number');
       const addComment = document.createElement('h3');
@@ -80,20 +86,31 @@ const modalStructure = async (buttons, showsList) => {
         : (commentSection.textContent = 'Comments (0)');
 
       commentButton.addEventListener('click', async (e) => {
-        e.preventDefault();
-        await postComments(commentButton.id, userName, userMsg);
-        const getCmts = await getComments(commentButton.id);
-        getCommentCount(commentSection, getCmts);
-        renderComments(commentDiv, getCmts);
-        userName.value = '';
-        userMsg.value = '';
+        if (userName.value === '' || userMsg.value === '') {
+          e.preventDefault();
+          const errorMsg = document.createElement('p');
+          errorMsg.classList.add('error-msg');
+          errorMsg.innerText = 'Please add your name and comment';
+          commentButton.parentNode.insertBefore(errorMsg, commentButton);
+          setTimeout(() => {
+            commentForm.removeChild(errorMsg);
+          }, 2000);
+        } else {
+          e.preventDefault();
+          await postComments(commentButton.id, userName, userMsg);
+          const getCmts = await getComments(commentButton.id);
+          getCommentCount(commentSection, getCmts);
+          renderComments(commentDiv, getCmts);
+          userName.value = '';
+          userMsg.value = '';
+        }
       });
       document.body.appendChild(modalSection);
       modalSection.appendChild(modalWrapper);
       modalWrapper.appendChild(modalDiv);
       modalDiv.append(
         close, imgWrapper, itemNumber,
-        detailWrap, detail5, commentSection,
+        detailWrap, detail5, detail6, commentSection,
         commentDiv, addComment, commentForm,
       );
       detailWrap.append(detail1, detail2, detail3, detail4);
