@@ -201,12 +201,35 @@ footer {
   height: 40px;
   width: 150px;
   padding: 0 1rem;
+  border: none;
 }
 
 .user-msg {
   height: 80px;
   width: 200px;
   padding: 1rem;
+  border: none;
+}
+
+.user-name:hover {
+  padding: 0 1.1rem;
+}
+
+.user-msg:hover {
+  padding: 1.5rem;
+}
+
+.user-name:focus,
+.user-msg:focus {
+  outline: none;
+  border: 1px solid #095e61;
+}
+
+.error-msg {
+  background-color: rgb(173, 10, 10);
+  color: #fff;
+  width: 60%;
+  padding: 0.5rem;
 }
 
 .comment-btn {
